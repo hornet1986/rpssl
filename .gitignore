@@ -416,3 +416,95 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+############################
+# Additions from merged Desktop .gitignore
+############################
+
+#################
+# VS / Tooling
+#################
+# Rider / IntelliJ
+.idea/
+*.sln.iml
+
+#################
+# JetBrains Rider (extra)
+#################
+*.ipr
+*.iws
+
+#################
+# Static Analysis / Tools
+#################
+# Sonar
+.sonar/
+.scannerwork/
+
+#################
+# Docker
+#################
+# Local-only docker-compose files
+docker-compose.override.yml
+docker-compose.*.local.yml
+# Temporary build context scratch
+tmp/
+
+#################
+# OS Files
+#################
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+#################
+# Coverage / Analysis (extras)
+#################
+coverage/
+coverage-*.json
+coverage-*.xml
+*.lcov
+*.coverlet.*
+*.opencover.xml
+
+#################
+# Logs / Dumps
+#################
+*.dmp
+*.stackdump
+
+#################
+# Security / Secrets (local-only config)
+#################
+appsettings.*.Local.json
+appsettings.Local.json
+# Azure Functions local settings
+local.settings.json
+
+#################
+# Certificates (additional)
+#################
+*.p12
+*.key
+*.cer
+*.crt
+
+#################
+# NuGet (extras)
+#################
+packages/
+.nuget/packages/
+
+#################
+# Other
+#################
+# Local database files
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# T4 / code generation intermediate outputs
+*.generated.cs.tmp
