@@ -1,18 +1,18 @@
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Rpssl.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedChoices : Migration
+    public partial class SeedChoiceTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.InsertData(
                 table: "Choices",
-                columns: new[] { "Id", "Name" },
+                columns: ["Id", "Name"],
                 values: new object[,]
                 {
                     { 1, "Rock" },
@@ -29,7 +29,7 @@ namespace Rpssl.Infrastructure.Migrations
             migrationBuilder.DeleteData(
                 table: "Choices",
                 keyColumn: "Id",
-                keyValues: new object[] { 1, 2, 3, 4, 5 });
+                keyValues: [1, 2, 3, 4, 5]);
         }
     }
 }
