@@ -2,25 +2,19 @@
 
 namespace Rpssl.Domain.Entities;
 
-public class GameResult
+public class GameResult(int playerChoiceId, int computerChoiceId, GameOutcome outcome)
 {
     public Guid Id { get; private set; } = Guid.NewGuid();
+
     public DateTimeOffset PlayedAt { get; private set; } = DateTimeOffset.UtcNow;
 
-    public int PlayerChoiceId { get; private set; }
-    public int ComputerChoiceId { get; private set; }
+    public int PlayerChoiceId { get; private set; } = playerChoiceId;
 
-    public GameOutcome Outcome { get; private set; }
+    public int ComputerChoiceId { get; private set; } = computerChoiceId;
 
-    public Choice? PlayerChoice { get; private set; }
-    public Choice? ComputerChoice { get; private set; }
+    public GameOutcome Outcome { get; private set; } = outcome;
 
-    private GameResult() { } // EF
+    public Choice? PlayerChoice { get; private set; } = null!;
 
-    public GameResult(int playerChoiceId, int computerChoiceId, GameOutcome outcome)
-    {
-        PlayerChoiceId = playerChoiceId;
-        ComputerChoiceId = computerChoiceId;
-        Outcome = outcome;
-    }
+    public Choice? ComputerChoice { get; private set; } = null!;
 }

@@ -14,7 +14,6 @@ public class EfGameResultRepository(RpsslDbContext db) : IGameResultRepository
 
     public Task<GameResult?> GetByIdAsync(Guid id, CancellationToken ct = default)
         => db.GameResults
-            .AsNoTracking()
             .Include(r => r.PlayerChoice)
             .Include(r => r.ComputerChoice)
             .FirstOrDefaultAsync(r => r.Id == id, ct);
@@ -22,7 +21,6 @@ public class EfGameResultRepository(RpsslDbContext db) : IGameResultRepository
     public async Task<IReadOnlyList<GameResult>> GetRecentAsync(int take, CancellationToken ct = default)
     {
         return await db.GameResults
-            .AsNoTracking()
             .OrderByDescending(r => r.PlayedAt)
             .Take(take)
             .Include(r => r.PlayerChoice)
