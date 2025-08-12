@@ -3,8 +3,16 @@ using Rpssl.Domain.Entities;
 
 namespace Rpssl.Infrastructure.Database;
 
-public class RpsslDbContext(DbContextOptions<RpsslDbContext> options) : DbContext(options)
+public sealed class RpsslDbContext : DbContext
 {
+    public RpsslDbContext()
+    {
+        ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+    }
+
+    public RpsslDbContext(DbContextOptions<RpsslDbContext> options) : base(options)
+    { }
+
     public DbSet<Choice> Choices { get; set; }
     public DbSet<GameResult> GameResults { get; set; }
 

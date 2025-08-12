@@ -1,37 +1,40 @@
-using Microsoft.EntityFrameworkCore;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Rpssl.Api;
+using Rpssl.Api.Extensions;
 using Rpssl.Application;
 using Rpssl.Infrastructure;
-using Rpssl.Infrastructure.Database;
 using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services
     .AddApplication()
+    .AddPresentation()
     .AddInfrastructure(builder.Configuration);
-
-builder.Host.UseSerilog((context, configuration) =>
-    configuration.ReadFrom.Configuration(context.Configuration));
 
 WebApplication app = builder.Build();
 
-using (IServiceScope scope = app.Services.CreateScope())
-{
-    RpsslDbContext dbContext = scope.ServiceProvider.GetRequiredService<RpsslDbContext>();
-    await dbContext.Database.MigrateAsync();
-}
+app.ApplyMigrations();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerWithUi();
 }
+
+app.MapHealthChecks("health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.UseSerilogRequestLogging();
 
+app.UseExceptionHandler();
+
 app.UseHttpsRedirection();
 
-app.Run();
+app.MapControllers();
+
+await app.RunAsync();

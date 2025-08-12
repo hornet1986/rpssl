@@ -13,22 +13,45 @@ namespace Rpssl.Infrastructure;
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    => services
+        .AddDatabase(configuration)
+        .AddRepositories()
+        .AddUnitOfWork()
+        .AddHealthChecks(configuration);
+
+    private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
         string connectionString = GetConnectionString(configuration);
-
         services.AddDbContext<RpsslDbContext>(options =>
         {
             SqlConnection sqlConnection = GetSqlConnection(connectionString);
             options.UseSqlServer(sqlConnection);
         });
+        return services;
+    }
 
-        // Repositories
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
         services.AddScoped<IChoiceRepository, EfChoiceRepository>();
         services.AddScoped<IGameResultRepository, EfGameResultRepository>();
+        return services;
+    }
 
-        // Unit of Work
+    private static IServiceCollection AddUnitOfWork(this IServiceCollection services)
+    {
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+        return services;
+    }
 
+    private static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+    {
+        services
+            .AddHealthChecks()
+            .AddSqlServer(
+                GetConnectionString(configuration),
+                name: "RpsslDatabase",
+                failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Unhealthy,
+                tags: ["db", "sql"]);
         return services;
     }
 
