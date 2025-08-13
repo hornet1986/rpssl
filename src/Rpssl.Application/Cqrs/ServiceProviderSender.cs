@@ -8,11 +8,7 @@ internal sealed class ServiceProviderSender(IServiceProvider serviceProvider) : 
     {
         // Resolve handler
         Type handlerType = typeof(IRequestHandler<,>).MakeGenericType(request.GetType(), typeof(TResponse));
-        dynamic? handler = serviceProvider.GetService(handlerType);
-        if (handler is null)
-        {
-            throw new InvalidOperationException($"No handler registered for {request.GetType().Name}");
-        }
+        dynamic? handler = serviceProvider.GetService(handlerType) ?? throw new InvalidOperationException($"No handler registered for {request.GetType().Name}");
 
         // Build pipeline
         IEnumerable<object> behaviors = GetBehaviors<TResponse>(request);
@@ -34,9 +30,8 @@ internal sealed class ServiceProviderSender(IServiceProvider serviceProvider) : 
     {
         Type behaviorOpenGeneric = typeof(IPipelineBehavior<,>);
         Type behaviorType = behaviorOpenGeneric.MakeGenericType(request.GetType(), typeof(TResponse));
-        // Resolve IEnumerable<IPipelineBehavior<TRequest, TResponse>> using non-generic service resolution
         Type enumerableType = typeof(IEnumerable<>).MakeGenericType(behaviorType);
         object? resolved = serviceProvider.GetService(enumerableType);
-        return resolved as IEnumerable<object> ?? Array.Empty<object>();
+        return resolved as IEnumerable<object> ?? [];
     }
 }

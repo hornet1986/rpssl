@@ -2,11 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Rpssl.Application.Abstractions;
 using Rpssl.Domain.Exceptions;
 using Rpssl.Domain.Repositories;
 using Rpssl.Infrastructure.Database;
 using Rpssl.Infrastructure.Database.Repositories;
 using Rpssl.Infrastructure.Database.UnitOfWork;
+using Rpssl.Infrastructure.Random;
 
 namespace Rpssl.Infrastructure;
 
@@ -17,6 +20,7 @@ public static class DependencyInjection
         .AddDatabase(configuration)
         .AddRepositories()
         .AddUnitOfWork()
+    .AddExternalServices(configuration)
         .AddHealthChecks(configuration);
 
     private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
@@ -40,6 +44,23 @@ public static class DependencyInjection
     private static IServiceCollection AddUnitOfWork(this IServiceCollection services)
     {
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+        return services;
+    }
+
+    private static IServiceCollection AddExternalServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<RandomNumberOptions>(configuration.GetSection(RandomNumberOptions.SectionName));
+
+        services.AddHttpClient<IRandomNumberService, RandomNumberService>((sp, http) =>
+        {
+            IOptions<RandomNumberOptions> optsAccessor = sp.GetRequiredService<IOptions<RandomNumberOptions>>();
+            RandomNumberOptions opts = optsAccessor.Value;
+            if (!string.IsNullOrWhiteSpace(opts.BaseUrl))
+            {
+                http.BaseAddress = new Uri(opts.BaseUrl);
+            }
+        });
+
         return services;
     }
 
