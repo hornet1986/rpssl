@@ -1,4 +1,4 @@
-using MediatR;
+using Rpssl.Application.Abstractions;
 using Rpssl.Domain.Enums;
 using Rpssl.Domain.Repositories;
 using Rpssl.SharedKernel;

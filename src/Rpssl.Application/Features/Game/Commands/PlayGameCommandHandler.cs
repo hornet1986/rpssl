@@ -1,4 +1,3 @@
-using MediatR;
 using Rpssl.Application.Abstractions;
 using Rpssl.Application.Features.Game.Mappings;
 using Rpssl.Domain.Entities;

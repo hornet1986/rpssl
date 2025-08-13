@@ -1,7 +1,7 @@
 using System.Reflection;
 using FluentValidation;
 using FluentValidation.Results;
-using MediatR;
+using Rpssl.Application.Abstractions;
 using Rpssl.SharedKernel;
 
 namespace Rpssl.Application.Behaviors;
