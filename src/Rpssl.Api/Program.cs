@@ -38,3 +38,6 @@ app.UseHttpsRedirection();
 app.MapControllers();
 
 await app.RunAsync();
+
+// Make Program class visible for WebApplicationFactory
+public partial class Program { }

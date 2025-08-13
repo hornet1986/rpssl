@@ -24,6 +24,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rpssl.Infrastructure.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rpssl.SharedKernel", "src\Rpssl.SharedKernel\Rpssl.SharedKernel.csproj", "{38682151-EC6F-446D-B1D4-1DBCE341844F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rpssl.Application.Tests", "tests\Rpssl.Application.Tests\Rpssl.Application.Tests.csproj", "{FEE067F2-04C7-4EC0-9B83-95F07A10F81F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rpssl.Api.Tests", "tests\Rpssl.Api.Tests\Rpssl.Api.Tests.csproj", "{40DB0EA6-3286-4C2D-99C9-C4ECCD24C185}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +58,14 @@ Global
 		{38682151-EC6F-446D-B1D4-1DBCE341844F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38682151-EC6F-446D-B1D4-1DBCE341844F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38682151-EC6F-446D-B1D4-1DBCE341844F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEE067F2-04C7-4EC0-9B83-95F07A10F81F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEE067F2-04C7-4EC0-9B83-95F07A10F81F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEE067F2-04C7-4EC0-9B83-95F07A10F81F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEE067F2-04C7-4EC0-9B83-95F07A10F81F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40DB0EA6-3286-4C2D-99C9-C4ECCD24C185}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40DB0EA6-3286-4C2D-99C9-C4ECCD24C185}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40DB0EA6-3286-4C2D-99C9-C4ECCD24C185}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40DB0EA6-3286-4C2D-99C9-C4ECCD24C185}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +77,8 @@ Global
 		{18838AFA-2832-43F7-93F0-423FB7CAA58E} = {DE88F719-8E4C-4D06-8C1B-D1063536BEA3}
 		{84E57167-7BA4-4493-9055-5A9C3C65D7D0} = {E5B80634-E31D-4CAE-8318-2ED8B3D3B69C}
 		{38682151-EC6F-446D-B1D4-1DBCE341844F} = {DE88F719-8E4C-4D06-8C1B-D1063536BEA3}
+		{FEE067F2-04C7-4EC0-9B83-95F07A10F81F} = {E5B80634-E31D-4CAE-8318-2ED8B3D3B69C}
+		{40DB0EA6-3286-4C2D-99C9-C4ECCD24C185} = {E5B80634-E31D-4CAE-8318-2ED8B3D3B69C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {481E0212-DFA0-403E-A73B-C40D3783594F}
