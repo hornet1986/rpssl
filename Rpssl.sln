@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rpssl.Application.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rpssl.Api.Tests", "tests\Rpssl.Api.Tests\Rpssl.Api.Tests.csproj", "{40DB0EA6-3286-4C2D-99C9-C4ECCD24C185}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{03C6AA31-4B24-4DE7-B3F6-3E60CC955553}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{40DB0EA6-3286-4C2D-99C9-C4ECCD24C185}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40DB0EA6-3286-4C2D-99C9-C4ECCD24C185}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40DB0EA6-3286-4C2D-99C9-C4ECCD24C185}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03C6AA31-4B24-4DE7-B3F6-3E60CC955553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03C6AA31-4B24-4DE7-B3F6-3E60CC955553}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03C6AA31-4B24-4DE7-B3F6-3E60CC955553}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03C6AA31-4B24-4DE7-B3F6-3E60CC955553}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

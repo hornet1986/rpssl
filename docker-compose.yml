@@ -1,0 +1,56 @@
+services:
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: rpssl-sql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Your_strong_password123!
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql-data:/var/opt/mssql
+    healthcheck:
+      # Use sqlcmd from tools18; -C to trust server cert (or specify TrustServerCertificate=yes). Fallback prints error then exits 1.
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -No -S localhost -U sa -P 'Your_strong_password123!' -Q 'SELECT 1' >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  seq:
+    image: datalust/seq:2024
+    container_name: rpssl-seq
+    environment:
+      - ACCEPT_EULA=Y
+      - SEQ_FIRSTRUN_ADMINPASSWORD=SeqAdmin123!
+    ports:
+      - "5341:5341"   # Ingestion (HTTP API)
+      - "5342:80"     # Web UI (mapped to 5342 locally)
+    volumes:
+      - seq-data:/data
+
+  api:
+    build:
+      context: .
+      dockerfile: src/Rpssl.Api/Dockerfile
+    container_name: rpssl-api
+    depends_on:
+      sql:
+        condition: service_healthy
+      seq:
+        condition: service_started
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__RpsslDatabase=Server=sql;Database=RpsslDb;User ID=sa;Password=Your_strong_password123!;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=true
+      - Serilog__WriteTo__1__Args__ServerUrl=http://seq:5341
+      # If the Dockerfile requires APP_UID to exist (it sets USER $APP_UID), ensure it's set. Uncomment below if needed.
+      # - APP_UID=1000
+    ports:
+      - "8080:8080"  # HTTP
+      - "8081:8081"  # HTTPS / secondary
+    # Optionally wait for DB readiness beyond healthcheck with a simple retry script; not needed if healthcheck adequate.
+
+volumes:
+  sql-data:
+  seq-data:
