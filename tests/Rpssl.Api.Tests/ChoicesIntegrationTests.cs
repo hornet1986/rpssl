@@ -54,5 +54,29 @@ public sealed class ChoicesIntegrationTests
         Assert.IsTrue(payload.Exists(c => c is { Id: 1, Name: "Rock" }));
     }
 
+    [TestMethod]
+    public async Task GetById_ExistingChoice_ReturnsChoice()
+    {
+        // Arrange
+        const int id = 3;
+        var entity = new Choice(id, "Scissors");
+
+        _factory.ChoiceRepositoryMock
+            .Setup(r => r.GetByIdAsync(id, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(entity);
+
+        using HttpClient client = _factory.CreateAnonymousClient();
+
+        // Act
+        HttpResponseMessage response = await client.GetAsync($"/api/v1/choices/{id}");
+
+        // Assert
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        ChoiceDto? payload = await response.Content.ReadFromJsonAsync<ChoiceDto>();
+        Assert.IsNotNull(payload);
+        Assert.AreEqual(id, payload.Id);
+        Assert.AreEqual("Scissors", payload.Name);
+    }
+
     private sealed record ChoiceDto(int Id, string Name);
 }

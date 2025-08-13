@@ -2,10 +2,11 @@ using System.ComponentModel.DataAnnotations;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Rpssl.Api.Extensions;
+using Rpssl.Application.Abstractions;
 using Rpssl.Application.Features.Game;
 using Rpssl.Application.Features.Game.Commands;
 using Rpssl.SharedKernel;
-using Rpssl.Application.Abstractions;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Rpssl.Api.Controllers;
 
@@ -21,6 +22,13 @@ public class GameController(ISender mediator) : ControllerBase
     }
 
     [HttpPost("play")]
+    [SwaggerOperation(Description = "Plays a round of Rock-Paper-Scissors-Spock-Lizard. The player submits their choice, and the server responds with the result of the game.")]
+    [Produces(System.Net.Mime.MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(GameResultDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Play([FromBody] PlayRequest request, CancellationToken ct)
     {
         Result<GameResultDto> result = await mediator.Send(new PlayGameCommand(request.PlayerChoiceId!.Value), ct);
