@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Rpssl.Application.Abstractions;
 
 namespace Rpssl.Application.Cqrs;
 
+[ExcludeFromCodeCoverage]
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddSimpleCqrs(this IServiceCollection services, Assembly assembly)
