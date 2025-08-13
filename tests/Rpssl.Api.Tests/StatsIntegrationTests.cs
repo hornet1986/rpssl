@@ -1,5 +1,10 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Rpssl.Api.Tests.Infrastructure;
 using Rpssl.Domain.Enums;
@@ -10,17 +15,35 @@ namespace Rpssl.Api.Tests;
 public sealed class StatsIntegrationTests
 {
     private static CustomWebApplicationFactory _factory = null!;
+    private static HttpClient _client = null!;
 
     [ClassInitialize]
     public static void ClassInit(TestContext context)
     {
         _factory = new CustomWebApplicationFactory();
+        _client = _factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddAuthentication(defaultScheme: "TestScheme")
+                        .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
+                            "TestScheme", options => { });
+                });
+            })
+            .CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false,
+            });
+
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(scheme: "TestScheme");
     }
 
     [ClassCleanup]
     public static void ClassCleanup()
     {
         _factory.Dispose();
+        _client.Dispose();
     }
 
     [TestMethod]
@@ -40,10 +63,8 @@ public sealed class StatsIntegrationTests
                 [GameOutcome.Draw] = 3
             });
 
-        using HttpClient client = _factory.CreateAnonymousClient();
-
         // Act
-        HttpResponseMessage response = await client.GetAsync("/api/v1/stats");
+        HttpResponseMessage response = await _client.GetAsync("/api/v1/Stats");
 
         // Assert
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -56,4 +77,12 @@ public sealed class StatsIntegrationTests
     }
 
     private sealed record StatsDto(int TotalGames, int PlayerWins, int ComputerWins, int Draws);
+
+    [TestMethod]
+    public async Task Get_Unauthorized_WithoutToken()
+    {
+        using HttpClient client = _factory.CreateAnonymousClient();
+        HttpResponseMessage response = await client.GetAsync("/api/v1/stats");
+        Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+    }
 }

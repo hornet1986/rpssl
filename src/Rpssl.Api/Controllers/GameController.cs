@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Rpssl.Api.Extensions;
 using Rpssl.Application.Abstractions;
 using Rpssl.Application.Features.Game;
@@ -13,6 +14,7 @@ namespace Rpssl.Api.Controllers;
 [ApiController]
 [ApiVersion(1)]
 [Route("api/v{version:apiVersion}/[controller]")]
+[Authorize]
 public class GameController(ISender mediator) : ControllerBase
 {
     public sealed class PlayRequest

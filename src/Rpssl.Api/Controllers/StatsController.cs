@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Rpssl.Api.Extensions;
 using Rpssl.Application.Abstractions;
 using Rpssl.Application.Features.Stats;
@@ -12,6 +13,7 @@ namespace Rpssl.Api.Controllers;
 [ApiController]
 [ApiVersion(1)]
 [Route("api/v{version:apiVersion}/[controller]")]
+[Authorize]
 public class StatsController(ISender mediator) : ControllerBase
 {
     [HttpGet]

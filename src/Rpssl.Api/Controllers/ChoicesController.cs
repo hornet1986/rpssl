@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rpssl.Api.Extensions;
 using Rpssl.Application.Abstractions;
@@ -12,6 +13,7 @@ namespace Rpssl.Api.Controllers;
 [ApiController]
 [ApiVersion(1)]
 [Route("api/v{version:apiVersion}/[controller]")]
+[Authorize]
 public class ChoicesController(ISender mediator) : ControllerBase
 {
     [HttpGet]

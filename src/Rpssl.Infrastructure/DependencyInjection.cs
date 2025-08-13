@@ -98,6 +98,7 @@ public static class DependencyInjection
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(o =>
             {
+                o.RequireHttpsMetadata = false; // Allow HTTP for local development & tests
                 o.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
