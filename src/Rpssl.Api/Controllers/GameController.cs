@@ -29,7 +29,7 @@ public class GameController(ISender mediator) : ControllerBase
     [ProducesResponseType(typeof(GameResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Play([FromBody] PlayRequest request, CancellationToken ct)
     {

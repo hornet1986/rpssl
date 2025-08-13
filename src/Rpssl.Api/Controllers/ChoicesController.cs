@@ -22,7 +22,7 @@ public class ChoicesController(ISender mediator) : ControllerBase
     [ProducesResponseType(typeof(IReadOnlyList<ChoiceDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAll(CancellationToken ct)
     {
@@ -36,7 +36,7 @@ public class ChoicesController(ISender mediator) : ControllerBase
     [ProducesResponseType(typeof(ChoiceDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetById(int id, CancellationToken ct)
     {
