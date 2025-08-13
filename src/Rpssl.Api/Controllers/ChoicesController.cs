@@ -1,17 +1,17 @@
 using Asp.Versioning;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Rpssl.Api.Extensions;
 using Rpssl.Application.Features.Choices;
 using Rpssl.Application.Features.Choices.Queries;
 using Rpssl.SharedKernel;
+using Rpssl.Application.Abstractions;
 
 namespace Rpssl.Api.Controllers;
 
 [ApiController]
 [ApiVersion(1)]
 [Route("api/v{version:apiVersion}/[controller]")]
-public class ChoicesController(IMediator mediator) : ControllerBase
+public class ChoicesController(ISender mediator) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken ct)

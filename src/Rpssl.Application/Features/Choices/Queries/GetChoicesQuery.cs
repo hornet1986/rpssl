@@ -1,4 +1,4 @@
-using MediatR;
+using Rpssl.Application.Abstractions;
 using Rpssl.SharedKernel;
 
 namespace Rpssl.Application.Features.Choices.Queries;

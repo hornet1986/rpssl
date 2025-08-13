@@ -1,4 +1,4 @@
-using MediatR;
+using Rpssl.Application.Abstractions;
 using Rpssl.Application.Features.Choices.Mappings;
 using Rpssl.Domain.Entities;
 using Rpssl.Domain.Repositories;
