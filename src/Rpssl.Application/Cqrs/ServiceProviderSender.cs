@@ -1,4 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
 using Rpssl.Application.Abstractions;
 
 namespace Rpssl.Application.Cqrs;
