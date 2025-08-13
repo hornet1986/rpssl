@@ -20,7 +20,7 @@ public static class DependencyInjection
         .AddDatabase(configuration)
         .AddRepositories()
         .AddUnitOfWork()
-    .AddExternalServices(configuration)
+        .AddExternalServices(configuration)
         .AddHealthChecks(configuration);
 
     private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
