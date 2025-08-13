@@ -15,6 +15,8 @@ public sealed class RpsslDbContext : DbContext
 
     public DbSet<Choice> Choices { get; set; }
     public DbSet<GameResult> GameResults { get; set; }
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

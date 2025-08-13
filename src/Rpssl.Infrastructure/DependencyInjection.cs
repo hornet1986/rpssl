@@ -1,15 +1,20 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Rpssl.Application.Abstractions;
 using Rpssl.Domain.Exceptions;
 using Rpssl.Domain.Repositories;
+using Rpssl.Infrastructure.Auth;
 using Rpssl.Infrastructure.Database;
 using Rpssl.Infrastructure.Database.Repositories;
 using Rpssl.Infrastructure.Database.UnitOfWork;
 using Rpssl.Infrastructure.Random;
+using Rpssl.Infrastructure.Time;
 
 namespace Rpssl.Infrastructure;
 
@@ -20,6 +25,7 @@ public static class DependencyInjection
         .AddDatabase(configuration)
         .AddRepositories()
         .AddUnitOfWork()
+        .AddAuth(configuration)
         .AddExternalServices(configuration)
         .AddHealthChecks(configuration);
 
@@ -38,6 +44,8 @@ public static class DependencyInjection
     {
         services.AddScoped<IChoiceRepository, EfChoiceRepository>();
         services.AddScoped<IGameResultRepository, EfGameResultRepository>();
+        services.AddScoped<IUserRepository, EfUserRepository>();
+        services.AddScoped<IRefreshTokenRepository, EfRefreshTokenRepository>();
         return services;
     }
 
@@ -73,6 +81,37 @@ public static class DependencyInjection
                 name: "RpsslDatabase",
                 failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Unhealthy,
                 tags: ["db", "sql"]);
+        return services;
+    }
+
+    private static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
+        services.AddSingleton<ITimeProvider, SystemTimeProvider>();
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
+        services.AddSingleton<IJwtTokenService, JwtTokenService>();
+
+        JwtOptions jwt = new();
+        configuration.GetSection(JwtOptions.SectionName).Bind(jwt);
+        byte[] keyBytes = Encoding.UTF8.GetBytes(jwt.SigningKey);
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(o =>
+            {
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwt.Issuer,
+                    ValidAudience = jwt.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+                    ClockSkew = TimeSpan.FromSeconds(30)
+                };
+            });
+
+        services.AddAuthorization();
         return services;
     }
 

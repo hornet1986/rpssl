@@ -1,34 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Features\Choices\Shared\**" />
-    <Compile Remove="Features\Game\Shared\**" />
-    <Compile Remove="Features\Stats\Shared\**" />
-    <EmbeddedResource Remove="Features\Choices\Shared\**" />
-    <EmbeddedResource Remove="Features\Game\Shared\**" />
-    <EmbeddedResource Remove="Features\Stats\Shared\**" />
-    <None Remove="Features\Choices\Shared\**" />
-    <None Remove="Features\Game\Shared\**" />
-    <None Remove="Features\Stats\Shared\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Features\Choices\Shared\**" />
+		<Compile Remove="Features\Game\Shared\**" />
+		<Compile Remove="Features\Stats\Shared\**" />
+		<EmbeddedResource Remove="Features\Choices\Shared\**" />
+		<EmbeddedResource Remove="Features\Game\Shared\**" />
+		<EmbeddedResource Remove="Features\Stats\Shared\**" />
+		<None Remove="Features\Choices\Shared\**" />
+		<None Remove="Features\Game\Shared\**" />
+		<None Remove="Features\Stats\Shared\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.15.0.120848">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="10.15.0.120848">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Rpssl.Domain\Rpssl.Domain.csproj" />
-  <ProjectReference Include="..\Rpssl.SharedKernel\Rpssl.SharedKernel.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Rpssl.Domain\Rpssl.Domain.csproj" />
+		<ProjectReference Include="..\Rpssl.SharedKernel\Rpssl.SharedKernel.csproj" />
+	</ItemGroup>
 
 </Project>
