@@ -26,18 +26,19 @@ public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
         {
             var settings = new Dictionary<string, string?>
             {
-                ["ConnectionStrings:RpsslDatabase"] = "Server=(localdb)\\MSSQLLocalDB;Database=RpsslTestDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True",
                 ["RandomNumber:BaseUrl"] = "http://localhost/"
             };
             config.AddInMemoryCollection(settings);
         });
 
-        builder.ConfigureServices((context, services) =>
+        builder.ConfigureServices((_, services) =>
         {
             // Remove the existing database context
-            string? connectionString = context.Configuration.GetConnectionString("RpsslDatabase");
             RemoveService<DbContextOptions<RpsslDbContext>>(services);
-            services.AddDbContext<RpsslDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<RpsslDbContext>(options =>
+            {
+                options.UseInMemoryDatabase($"RpsslApiTests_{Guid.NewGuid()}");
+            });
             // Remove real infrastructure registrations that we will mock (DbContext/repositories/unitofwork, http clients)
             RemoveService<IChoiceRepository>(services);
             RemoveService<IGameResultRepository>(services);
