@@ -13,13 +13,13 @@ public static class DependencyInjection
     {
         System.Reflection.Assembly assembly = typeof(DependencyInjection).Assembly;
 
-    services.AddSimpleCqrs(assembly);
+        services.AddSimpleCqrs(assembly);
 
         services.AddValidatorsFromAssembly(assembly);
 
         services.AddSingleton<IGameRulesEngine, GameRulesEngine>();
 
-    services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         return services;
     }

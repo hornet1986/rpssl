@@ -13,6 +13,6 @@ internal sealed class GetChoiceByIdQueryHandler(IChoiceRepository repo) : IReque
     public async Task<Result<ChoiceDto>> Handle(GetChoiceByIdQuery request, CancellationToken cancellationToken)
     {
         Choice? entity = await repo.GetByIdAsync(request.Id, cancellationToken);
-        return entity is null ? Result.Failure<ChoiceDto>(ChoiceNotFound) : Result.Success(entity.ToDto());
+        return entity?.ToDto() ?? Result.Failure<ChoiceDto>(ChoiceNotFound);
     }
 }

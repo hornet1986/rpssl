@@ -11,7 +11,6 @@ internal sealed class GetChoicesQueryHandler(IChoiceRepository repo) : IRequestH
     public async Task<Result<IReadOnlyList<ChoiceDto>>> Handle(GetChoicesQuery request, CancellationToken cancellationToken)
     {
         IReadOnlyList<Choice> list = await repo.GetAllAsync(cancellationToken);
-        var dtos = list.Select(c => c.ToDto()).ToList();
-        return dtos;
+        return list.Select(c => c.ToDto()).ToList();
     }
 }
