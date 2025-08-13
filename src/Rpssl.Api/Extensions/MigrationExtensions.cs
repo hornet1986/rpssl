@@ -12,6 +12,10 @@ public static class MigrationExtensions
         using RpsslDbContext dbContext = 
             scope.ServiceProvider.GetRequiredService<RpsslDbContext>();
 
-        dbContext.Database.Migrate();
+        // Only apply migrations for relational providers (skip for in-memory during tests)
+        if (dbContext.Database.IsRelational())
+        {
+            dbContext.Database.Migrate();
+        }
     }
 }

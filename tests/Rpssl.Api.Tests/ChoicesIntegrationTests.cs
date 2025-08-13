@@ -1,5 +1,10 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Rpssl.Api.Tests.Infrastructure;
 using Rpssl.Domain.Entities;
@@ -10,17 +15,36 @@ namespace Rpssl.Api.Tests;
 public sealed class ChoicesIntegrationTests
 {
     private static CustomWebApplicationFactory _factory = null!;
+    private static HttpClient _client = null!;
 
     [ClassInitialize]
     public static void ClassInit(TestContext context)
     {
         _factory = new CustomWebApplicationFactory();
+
+        _client = _factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddAuthentication(defaultScheme: "TestScheme")
+                        .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
+                            "TestScheme", options => { });
+                });
+            })
+            .CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false,
+            });
+
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(scheme: "TestScheme");
     }
 
     [ClassCleanup]
     public static void ClassCleanup()
     {
-       _factory.Dispose();
+        _factory.Dispose();
+        _client.Dispose();
     }
 
     [TestMethod]
@@ -40,10 +64,8 @@ public sealed class ChoicesIntegrationTests
             .Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(choices);
 
-        using HttpClient client = _factory.CreateAnonymousClient();
-
         // Act
-        HttpResponseMessage response = await client.GetAsync("/api/v1/choices");
+        HttpResponseMessage response = await _client.GetAsync("/api/v1/choices");
 
         // Assert
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -65,10 +87,8 @@ public sealed class ChoicesIntegrationTests
             .Setup(r => r.GetByIdAsync(id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(entity);
 
-        using HttpClient client = _factory.CreateAnonymousClient();
-
         // Act
-        HttpResponseMessage response = await client.GetAsync($"/api/v1/choices/{id}");
+        HttpResponseMessage response = await _client.GetAsync($"/api/v1/choices/{id}");
 
         // Assert
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -79,4 +99,12 @@ public sealed class ChoicesIntegrationTests
     }
 
     private sealed record ChoiceDto(int Id, string Name);
+
+    [TestMethod]
+    public async Task GetAll_Unauthorized_WithoutToken()
+    {
+        using HttpClient client = _factory.CreateAnonymousClient();
+        HttpResponseMessage response = await client.GetAsync("/api/v1/choices");
+        Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+    }
 }

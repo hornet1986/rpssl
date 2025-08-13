@@ -42,6 +42,6 @@ internal sealed class PlayGameCommandHandler(
         await results.AddAsync(entity, cancellationToken);
         await uow.SaveChangesAsync(cancellationToken);
 
-        return Result.Success(entity.ToDto());
+        return entity.ToDto();
     }
 }

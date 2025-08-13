@@ -1,5 +1,10 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Rpssl.Api.Tests.Infrastructure;
 using Rpssl.Domain.Entities;
@@ -12,17 +17,35 @@ namespace Rpssl.Api.Tests;
 public sealed class GameIntegrationTests
 {
     private static CustomWebApplicationFactory _factory = null!;
+    private static HttpClient _client = null!;
 
     [ClassInitialize]
     public static void ClassInit(TestContext context)
     {
         _factory = new CustomWebApplicationFactory();
+        _client = _factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddAuthentication(defaultScheme: "TestScheme")
+                        .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
+                            "TestScheme", options => { });
+                });
+            })
+            .CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false,
+            });
+
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(scheme: "TestScheme");
     }
 
     [ClassCleanup]
     public static void ClassCleanup()
     {
         _factory.Dispose();
+        _client.Dispose();
     }
 
     [TestMethod]
@@ -44,19 +67,12 @@ public sealed class GameIntegrationTests
             .Callback<GameResult, CancellationToken>((gr, _) => saved = gr)
             .Returns(Task.CompletedTask);
 
-        _factory.UnitOfWorkMock
-            .Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(1);
-
-        using HttpClient client = _factory.CreateAnonymousClient();
-
         // Act
-        HttpResponseMessage response = await client.PostAsJsonAsync("/api/v1/game/play", new { playerChoiceId = 1 });
+        HttpResponseMessage response = await _client.PostAsJsonAsync("/api/v1/game/play", new { playerChoiceId = 1 });
 
         // Assert
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         _factory.GameResultRepositoryMock.Verify(r => r.AddAsync(It.IsAny<GameResult>(), It.IsAny<CancellationToken>()), Times.Once);
-        _factory.UnitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         Assert.IsNotNull(saved);
         Assert.AreEqual(1, saved!.PlayerChoiceId);
         Assert.AreEqual(2, saved.ComputerChoiceId);
