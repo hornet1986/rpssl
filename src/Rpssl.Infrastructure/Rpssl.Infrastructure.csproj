@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="9.0.0" />
+  <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+  <PackageReference Include="Polly" Version="8.4.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.19" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="10.15.0.120848">
@@ -18,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Rpssl.Domain\Rpssl.Domain.csproj" />
+  <ProjectReference Include="..\Rpssl.Application\Rpssl.Application.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,9 @@
-using Rpssl.Application.Abstractions;
 using Rpssl.Application.Features.Game.Mappings;
 using Rpssl.Domain.Entities;
 using Rpssl.Domain.Enums;
 using Rpssl.Domain.Repositories;
 using Rpssl.SharedKernel;
+using Rpssl.Application.Abstractions;
 
 namespace Rpssl.Application.Features.Game.Commands;
 
@@ -11,7 +11,8 @@ internal sealed class PlayGameCommandHandler(
     IChoiceRepository choices,
     IGameResultRepository results,
     IUnitOfWork uow,
-    IGameRulesEngine rules
+    IGameRulesEngine rules,
+    IRandomNumberService randomNumberService
 ) : IRequestHandler<PlayGameCommand, Result<GameResultDto>>
 {
     private static readonly Error PlayerChoiceNotFound = Error.NotFound(
@@ -27,15 +28,13 @@ internal sealed class PlayGameCommandHandler(
             return Result.Failure<GameResultDto>(PlayerChoiceNotFound);
         }
 
-        // Pick a random computer choice (based on available choices count)
-        IReadOnlyList<Choice> allChoices = await choices.GetAllAsync(cancellationToken);
-        if (allChoices.Count == 0)
+        // Get a random number from remote service (1-5)
+        Result<int> randomResult = await randomNumberService.GetRandomOneToFiveAsync(cancellationToken);
+        if (randomResult.IsFailure)
         {
-            return Result.Failure<GameResultDto>(Error.Failure("Choices.Empty", "No choices available"));
+            return Result.Failure<GameResultDto>(randomResult.Error);
         }
-
-        // Simple random selection
-        int computerChoiceId = allChoices[new Random().Next(0, allChoices.Count)].Id;
+        int computerChoiceId = randomResult.Value;
 
         GameOutcome outcome = rules.DecideOutcome(request.PlayerChoiceId, computerChoiceId);
 
