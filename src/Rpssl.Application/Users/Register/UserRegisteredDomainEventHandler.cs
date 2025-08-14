@@ -1,0 +1,13 @@
+﻿using Rpssl.Domain.Users;
+using Rpssl.SharedKernel;
+
+namespace Rpssl.Application.Users.Register;
+
+internal sealed class GameReusltCreatedDomainEventHandler : IDomainEventHandler<UserRegisteredDomainEvent>
+{
+    public Task Handle(UserRegisteredDomainEvent domainEvent, CancellationToken cancellationToken)
+    {
+        // TODO: Send an email verification link, etc.
+        return Task.CompletedTask;
+    }
+}

@@ -1,11 +1,11 @@
 using Moq;
-using Rpssl.Application.Features.Game;
-using Rpssl.Application.Features.Game.Commands;
-using Rpssl.Domain.Entities;
-using Rpssl.Domain.Enums;
-using Rpssl.Domain.Repositories;
-using Rpssl.SharedKernel;
 using Rpssl.Application.Abstractions;
+using Rpssl.Application.Games;
+using Rpssl.Domain.Choices;
+using Rpssl.Domain.GameOutcome;
+using Rpssl.Domain.GameResults;
+using Rpssl.Domain.UnitOfWork;
+using Rpssl.SharedKernel;
 
 namespace Rpssl.Application.Tests.Features.Game;
 

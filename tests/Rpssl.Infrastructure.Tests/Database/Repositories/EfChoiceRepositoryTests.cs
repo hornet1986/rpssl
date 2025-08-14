@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Rpssl.Domain.Entities;
+using Rpssl.Domain.Choices;
 using Rpssl.Infrastructure.Database;
 using Rpssl.Infrastructure.Database.Repositories;
 

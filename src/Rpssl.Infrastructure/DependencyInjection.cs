@@ -7,12 +7,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Rpssl.Application.Abstractions;
+using Rpssl.Domain.Choices;
 using Rpssl.Domain.Exceptions;
-using Rpssl.Domain.Repositories;
-using Rpssl.Infrastructure.Auth;
+using Rpssl.Domain.GameResults;
+using Rpssl.Domain.RefreshTokens;
+using Rpssl.Domain.UnitOfWork;
+using Rpssl.Domain.Users;
+using Rpssl.Infrastructure.Authentication;
 using Rpssl.Infrastructure.Database;
 using Rpssl.Infrastructure.Database.Repositories;
 using Rpssl.Infrastructure.Database.UnitOfWork;
+using Rpssl.Infrastructure.DomainEvents;
 using Rpssl.Infrastructure.Random;
 using Rpssl.Infrastructure.Time;
 
@@ -25,7 +30,8 @@ public static class DependencyInjection
         .AddDatabase(configuration)
         .AddRepositories()
         .AddUnitOfWork()
-        .AddAuth(configuration)
+        .AddAuthentication(configuration)
+        .AddServices()
         .AddExternalServices(configuration)
         .AddHealthChecks(configuration);
 
@@ -52,6 +58,13 @@ public static class DependencyInjection
     private static IServiceCollection AddUnitOfWork(this IServiceCollection services)
     {
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+        return services;
+    }
+
+    private static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        services.AddTransient<IDomainEventsDispatcher, DomainEventsDispatcher>();
+
         return services;
     }
 
@@ -84,10 +97,10 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
-        services.AddSingleton<ITimeProvider, SystemTimeProvider>();
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<IJwtTokenService, JwtTokenService>();
 

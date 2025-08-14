@@ -1,17 +1,16 @@
 using Microsoft.EntityFrameworkCore;
-using Rpssl.Domain.Entities;
-using Rpssl.Domain.Repositories;
+using Rpssl.Domain.Users;
 
 namespace Rpssl.Infrastructure.Database.Repositories;
 
-public class EfUserRepository(RpsslDbContext db) : IUserRepository
+public class EfUserRepository(RpsslDbContext dbContext) : IUserRepository
 {
     public Task<User?> GetByUsernameAsync(string username, CancellationToken ct = default)
-        => db.Users.FirstOrDefaultAsync(u => u.Username == username, ct);
+        => dbContext.Users.FirstOrDefaultAsync(u => u.Username == username, ct);
 
     public Task<User?> GetByIdAsync(Guid id, CancellationToken ct = default)
-        => db.Users.FirstOrDefaultAsync(u => u.Id == id, ct);
+        => dbContext.Users.FirstOrDefaultAsync(u => u.Id == id, ct);
 
     public async Task AddAsync(User user, CancellationToken ct = default)
-        => await db.Users.AddAsync(user, ct);
+        => await dbContext.Users.AddAsync(user, ct);
 }

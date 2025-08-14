@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Rpssl.Api.Tests.Infrastructure;
-using Rpssl.Domain.Entities;
+using Rpssl.Domain.Choices;
 
 namespace Rpssl.Api.Tests;
 

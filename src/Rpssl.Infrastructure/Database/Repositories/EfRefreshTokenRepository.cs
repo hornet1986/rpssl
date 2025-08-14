@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Rpssl.Domain.Entities;
-using Rpssl.Domain.Repositories;
+using Rpssl.Domain.RefreshTokens;
 
 namespace Rpssl.Infrastructure.Database.Repositories;
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rpssl.Domain.Entities;
-using Rpssl.Domain.Enums;
-using Rpssl.Domain.Repositories;
+using Rpssl.Domain.GameOutcome;
+using Rpssl.Domain.GameResults;
 
 namespace Rpssl.Infrastructure.Database.Repositories;
 

@@ -7,15 +7,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="Features\Choices\Shared\**" />
-		<Compile Remove="Features\Game\Shared\**" />
-		<Compile Remove="Features\Stats\Shared\**" />
-		<EmbeddedResource Remove="Features\Choices\Shared\**" />
-		<EmbeddedResource Remove="Features\Game\Shared\**" />
-		<EmbeddedResource Remove="Features\Stats\Shared\**" />
-		<None Remove="Features\Choices\Shared\**" />
-		<None Remove="Features\Game\Shared\**" />
-		<None Remove="Features\Stats\Shared\**" />
+		<Compile Remove="Choices\Shared\**" />
+		<Compile Remove="Games\Shared\**" />
+		<Compile Remove="Stats\Shared\**" />
+		<EmbeddedResource Remove="Choices\Shared\**" />
+		<EmbeddedResource Remove="Games\Shared\**" />
+		<EmbeddedResource Remove="Stats\Shared\**" />
+		<None Remove="Choices\Shared\**" />
+		<None Remove="Games\Shared\**" />
+		<None Remove="Stats\Shared\**" />
 	</ItemGroup>
 
 	<ItemGroup>

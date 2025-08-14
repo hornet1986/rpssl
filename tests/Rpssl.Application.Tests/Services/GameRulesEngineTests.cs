@@ -1,5 +1,5 @@
 using Rpssl.Application.Services;
-using Rpssl.Domain.Enums;
+using Rpssl.Domain.GameOutcome;
 
 namespace Rpssl.Application.Tests.Services;
 

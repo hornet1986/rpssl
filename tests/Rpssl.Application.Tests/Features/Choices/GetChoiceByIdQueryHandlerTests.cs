@@ -1,7 +1,7 @@
 using Moq;
-using Rpssl.Application.Features.Choices.Queries;
-using Rpssl.Domain.Entities;
-using Rpssl.Domain.Repositories;
+using Rpssl.Application.Choices;
+using Rpssl.Application.Choices.Queries;
+using Rpssl.Domain.Choices;
 using Rpssl.SharedKernel;
 
 namespace Rpssl.Application.Tests.Features.Choices;
@@ -20,7 +20,7 @@ public class GetChoiceByIdQueryHandlerTests
         var handler = new GetChoiceByIdQueryHandler(repo.Object);
 
         // Act
-        Result<Rpssl.Application.Features.Choices.ChoiceDto> result = await handler.Handle(new GetChoiceByIdQuery(42), CancellationToken.None);
+        Result<ChoiceDto> result = await handler.Handle(new GetChoiceByIdQuery(42), CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.IsFailure);
@@ -38,7 +38,7 @@ public class GetChoiceByIdQueryHandlerTests
         var handler = new GetChoiceByIdQueryHandler(repo.Object);
 
         // Act
-        Result<Rpssl.Application.Features.Choices.ChoiceDto> result = await handler.Handle(new GetChoiceByIdQuery(2), CancellationToken.None);
+        Result<ChoiceDto> result = await handler.Handle(new GetChoiceByIdQuery(2), CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.IsSuccess);

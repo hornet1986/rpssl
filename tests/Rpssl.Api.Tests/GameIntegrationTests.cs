@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Rpssl.Api.Tests.Infrastructure;
-using Rpssl.Domain.Entities;
-using Rpssl.Domain.Enums;
+using Rpssl.Domain.Choices;
+using Rpssl.Domain.GameOutcome;
+using Rpssl.Domain.GameResults;
 using Rpssl.SharedKernel;
 
 namespace Rpssl.Api.Tests;

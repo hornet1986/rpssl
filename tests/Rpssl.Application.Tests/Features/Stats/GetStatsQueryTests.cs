@@ -1,8 +1,8 @@
 using Moq;
-using Rpssl.Application.Features.Stats;
-using Rpssl.Application.Features.Stats.Queries;
-using Rpssl.Domain.Enums;
-using Rpssl.Domain.Repositories;
+using Rpssl.Application.Stats;
+using Rpssl.Application.Stats.Queries;
+using Rpssl.Domain.GameOutcome;
+using Rpssl.Domain.GameResults;
 using Rpssl.SharedKernel;
 
 namespace Rpssl.Application.Tests.Features.Stats;

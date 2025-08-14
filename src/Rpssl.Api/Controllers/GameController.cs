@@ -1,11 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using Asp.Versioning;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Rpssl.Api.Extensions;
 using Rpssl.Application.Abstractions;
-using Rpssl.Application.Features.Game;
-using Rpssl.Application.Features.Game.Commands;
+using Rpssl.Application.Games;
 using Rpssl.SharedKernel;
 using Swashbuckle.AspNetCore.Annotations;
 

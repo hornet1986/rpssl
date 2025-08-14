@@ -7,7 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Rpssl.Application.Abstractions;
-using Rpssl.Domain.Repositories;
+using Rpssl.Domain.Choices;
+using Rpssl.Domain.GameResults;
+using Rpssl.Domain.UnitOfWork;
 using Rpssl.Infrastructure.Database;
 
 namespace Rpssl.Api.Tests.Infrastructure;

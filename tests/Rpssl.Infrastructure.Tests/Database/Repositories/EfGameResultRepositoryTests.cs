@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Rpssl.Domain.Entities;
-using Rpssl.Domain.Enums;
+using Rpssl.Domain.Choices;
+using Rpssl.Domain.GameOutcome;
+using Rpssl.Domain.GameResults;
 using Rpssl.Infrastructure.Database;
 using Rpssl.Infrastructure.Database.Repositories;
 
@@ -22,7 +23,7 @@ public class EfGameResultRepositoryTests
     [TestMethod]
     public async Task AddAsync_AddsGameResult()
     {
-        using var context = new RpsslDbContext(_dbContextOptions);
+        await using var context = new RpsslDbContext(_dbContextOptions);
         var repository = new EfGameResultRepository(context);
         var result = new GameResult(1, 2, GameOutcome.PlayerWin);
         await repository.AddAsync(result);
@@ -34,7 +35,7 @@ public class EfGameResultRepositoryTests
     [TestMethod]
     public async Task GetByIdAsync_ReturnsCorrectGameResultWithChoices()
     {
-        using var context = new RpsslDbContext(_dbContextOptions);
+        await using var context = new RpsslDbContext(_dbContextOptions);
         var playerChoice = new Choice(1, "Rock");
         var computerChoice = new Choice(2, "Paper");
         context.Choices.AddRange(playerChoice, computerChoice);
@@ -43,7 +44,7 @@ public class EfGameResultRepositoryTests
         await context.SaveChangesAsync();
         var repository = new EfGameResultRepository(context);
 
-        var fetched = await repository.GetByIdAsync(result.Id);
+        GameResult? fetched = await repository.GetByIdAsync(result.Id);
         Assert.IsNotNull(fetched);
         Assert.AreEqual(GameOutcome.ComputerWin, fetched!.Outcome);
         Assert.IsNotNull(fetched.PlayerChoice);
@@ -55,7 +56,7 @@ public class EfGameResultRepositoryTests
     [TestMethod]
     public async Task GetRecentAsync_ReturnsMostRecentGameResultsWithChoices()
     {
-        using var context = new RpsslDbContext(_dbContextOptions);
+        await using var context = new RpsslDbContext(_dbContextOptions);
         var playerChoice = new Choice(1, "Rock");
         var computerChoice = new Choice(2, "Paper");
         context.Choices.AddRange(playerChoice, computerChoice);
@@ -68,7 +69,7 @@ public class EfGameResultRepositoryTests
         await context.SaveChangesAsync();
         var repository = new EfGameResultRepository(context);
 
-        var recent = await repository.GetRecentAsync(1);
+        IReadOnlyList<GameResult> recent = await repository.GetRecentAsync(1);
         Assert.AreEqual(1, recent.Count);
         Assert.AreEqual(GameOutcome.PlayerWin, recent[0].Outcome);
         Assert.IsNotNull(recent[0].PlayerChoice);
@@ -78,7 +79,7 @@ public class EfGameResultRepositoryTests
     [TestMethod]
     public async Task CountAsync_ReturnsCorrectCount()
     {
-        using var context = new RpsslDbContext(_dbContextOptions);
+        await using var context = new RpsslDbContext(_dbContextOptions);
         context.GameResults.AddRange(
             new GameResult(1, 2, GameOutcome.Draw),
             new GameResult(1, 2, GameOutcome.PlayerWin)
@@ -93,7 +94,7 @@ public class EfGameResultRepositoryTests
     [TestMethod]
     public async Task CountByOutcomeAsync_ReturnsCorrectCounts()
     {
-        using var context = new RpsslDbContext(_dbContextOptions);
+        await using var context = new RpsslDbContext(_dbContextOptions);
         context.GameResults.AddRange(
             new GameResult(1, 2, GameOutcome.Draw),
             new GameResult(1, 2, GameOutcome.PlayerWin),
@@ -102,7 +103,7 @@ public class EfGameResultRepositoryTests
         await context.SaveChangesAsync();
         var repository = new EfGameResultRepository(context);
 
-        var dict = await repository.CountByOutcomeAsync();
+        IDictionary<GameOutcome, int> dict = await repository.CountByOutcomeAsync();
         Assert.AreEqual(2, dict.Count);
         Assert.AreEqual(1, dict[GameOutcome.Draw]);
         Assert.AreEqual(2, dict[GameOutcome.PlayerWin]);

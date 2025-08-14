@@ -1,5 +1,5 @@
 using FluentValidation.Results;
-using Rpssl.Application.Features.Game.Commands;
+using Rpssl.Application.Games;
 
 namespace Rpssl.Application.Tests.Features.Game;
 

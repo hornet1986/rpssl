@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rpssl.Api.Extensions;
 using Rpssl.Application.Abstractions;
-using Rpssl.Application.Features.Choices;
-using Rpssl.Application.Features.Choices.Queries;
+using Rpssl.Application.Choices;
+using Rpssl.Application.Choices.Queries;
 using Rpssl.SharedKernel;
 using Swashbuckle.AspNetCore.Annotations;
 

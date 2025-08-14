@@ -1,10 +1,10 @@
 using Asp.Versioning;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Rpssl.Api.Extensions;
 using Rpssl.Application.Abstractions;
-using Rpssl.Application.Features.Stats;
-using Rpssl.Application.Features.Stats.Queries;
+using Rpssl.Application.Stats;
+using Rpssl.Application.Stats.Queries;
 using Rpssl.SharedKernel;
 using Swashbuckle.AspNetCore.Annotations;
 

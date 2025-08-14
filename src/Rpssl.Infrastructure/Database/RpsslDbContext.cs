@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rpssl.Domain.Entities;
+using Rpssl.Domain.Choices;
+using Rpssl.Domain.GameResults;
+using Rpssl.Domain.RefreshTokens;
+using Rpssl.Domain.Users;
 
 namespace Rpssl.Infrastructure.Database;
 
