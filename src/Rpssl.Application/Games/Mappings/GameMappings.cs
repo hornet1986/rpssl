@@ -1,4 +1,3 @@
-using Rpssl.Application.Games;
 using Rpssl.Domain.GameResults;
 
 namespace Rpssl.Application.Games.Mappings;

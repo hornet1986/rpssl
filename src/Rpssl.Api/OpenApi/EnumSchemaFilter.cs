@@ -21,6 +21,6 @@ public sealed class EnumSchemaFilter : ISchemaFilter
             .Select(IOpenApiAny (n) => new OpenApiString(n))
             .ToList();
         schema.Type = "string";
-        schema.Format = null; // clear any int format
+        schema.Format = null;
     }
 }

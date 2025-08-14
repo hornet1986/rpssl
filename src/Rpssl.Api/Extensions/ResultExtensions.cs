@@ -15,7 +15,7 @@ public static class ResultExtensions
         return result.IsSuccess ? new OkObjectResult(result.Value) : MapError(result.Error);
     }
 
-    private static IActionResult MapError(Error error)
+    private static ObjectResult MapError(Error error)
     {
         return error.Type switch
         {

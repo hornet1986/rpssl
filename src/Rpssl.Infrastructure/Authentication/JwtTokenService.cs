@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Rpssl.Application.Abstractions;
+using Rpssl.SharedKernel;
 
 namespace Rpssl.Infrastructure.Authentication;
 

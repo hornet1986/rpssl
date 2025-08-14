@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Reflection;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Rpssl.Application.Abstractions;
 using Rpssl.Application.Behaviors;
@@ -22,5 +23,28 @@ public static class DependencyInjection
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         return services;
+    }
+
+    private static void AddSimpleCqrs(this IServiceCollection services, Assembly assembly)
+    {
+        services.AddScoped<ISender, ServiceProviderSender>();
+
+        Type handlerInterface = typeof(IRequestHandler<,>);
+        foreach (Type type in assembly.GetTypes())
+        {
+            if (type.IsAbstract || type.IsInterface)
+            {
+                continue;
+            }
+
+            var implemented = type.GetInterfaces()
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == handlerInterface)
+                .ToList();
+
+            foreach (Type iface in implemented)
+            {
+                services.AddTransient(iface, type);
+            }
+        }
     }
 }

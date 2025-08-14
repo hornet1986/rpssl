@@ -2,6 +2,8 @@
 
 An educational, layered .NET 8 Web API that implements core mechanics for the Rock–Paper–Scissors–Spock–Lizard game. The solution demonstrates clean layering, versioned REST endpoints, EF Core persistence, health checks, structured logging with Serilog + Seq, and Docker Compose orchestration with SQL Server.
 
+> For code style, architecture boundaries, and collaboration standards, see `CODING_GUIDELINES.md`.
+
 ## Solution Layout
 
 ```
@@ -185,10 +187,22 @@ Consider adding a `Directory.Build.props`, `Makefile`, or `dotnet tool` manifest
 
 ## Contributing
 
-1. Create a feature branch: `git checkout -b feature/short-desc`
-2. Commit with conventional commit style if desired (e.g., `feat: add game outcome service`)
-3. Run `dotnet test` before pushing.
-4. Open a PR; ensure CI passes.
+1. Read `CODING_GUIDELINES.md` (especially sections on layering & naming) if it's your first contribution.
+2. Create a feature branch: `git checkout -b feat/short-desc` (or `fix/`, `docs/`, etc.)
+3. Use conventional commits where practical (e.g., `feat: add game outcome service`).
+4. Keep commits focused & tests updated.
+5. Run `dotnet test` before pushing; ensure no new warnings.
+6. Open a PR with context (what & why). Reference any related issues.
+
+### Developer Environment Tips
+- Use the .NET 8 SDK pinned by `global.json`.
+- Consider installing the following helpful global tools (optional): `dotnet-ef`, `dotnet-format`.
+- If you add significant architecture decisions, consider starting a lightweight ADR under a future `docs/adr` folder.
+
+### Style & Quality
+- Follow the patterns in `CODING_GUIDELINES.md` for naming, validation, and exception handling.
+- Prefer adding unit tests alongside new features; integration tests for persistence-heavy changes.
+- Update README sections (Configuration, Health Checks, Auth) if you expand those areas.
 
 ## License
 
