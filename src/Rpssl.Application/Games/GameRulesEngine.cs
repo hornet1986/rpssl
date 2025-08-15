@@ -1,7 +1,7 @@
 using Rpssl.Application.Abstractions;
 using Rpssl.Domain.GameOutcome;
 
-namespace Rpssl.Application.Services;
+namespace Rpssl.Application.Games;
 
 // Rock(1) Paper(2) Scissors(3) Lizard(4) Spock(5)
 public sealed class GameRulesEngine : IGameRulesEngine

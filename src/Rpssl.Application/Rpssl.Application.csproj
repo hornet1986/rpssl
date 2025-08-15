@@ -9,13 +9,13 @@
 	<ItemGroup>
 		<Compile Remove="Choices\Shared\**" />
 		<Compile Remove="Games\Shared\**" />
-		<Compile Remove="Stats\Shared\**" />
+		<Compile Remove="GameResults\Shared\**" />
 		<EmbeddedResource Remove="Choices\Shared\**" />
 		<EmbeddedResource Remove="Games\Shared\**" />
-		<EmbeddedResource Remove="Stats\Shared\**" />
+		<EmbeddedResource Remove="GameResults\Shared\**" />
 		<None Remove="Choices\Shared\**" />
 		<None Remove="Games\Shared\**" />
-		<None Remove="Stats\Shared\**" />
+		<None Remove="GameResults\Shared\**" />
 	</ItemGroup>
 
 	<ItemGroup>

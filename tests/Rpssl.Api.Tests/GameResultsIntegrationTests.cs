@@ -12,7 +12,7 @@ using Rpssl.Domain.GameOutcome;
 namespace Rpssl.Api.Tests;
 
 [TestClass]
-public sealed class StatsIntegrationTests
+public sealed class GameResultsIntegrationTests
 {
     private static CustomWebApplicationFactory _factory = null!;
     private static HttpClient _client = null!;
@@ -47,7 +47,7 @@ public sealed class StatsIntegrationTests
     }
 
     [TestMethod]
-    public async Task Get_ReturnsAggregatedStats()
+    public async Task Get_ReturnsAggregatedGameResults()
     {
         // Arrange
         _factory.GameResultRepositoryMock
@@ -64,7 +64,7 @@ public sealed class StatsIntegrationTests
             });
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync("/api/v1/Stats");
+        HttpResponseMessage response = await _client.GetAsync("/api/v1.0/GameResults");
 
         // Assert
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -82,7 +82,20 @@ public sealed class StatsIntegrationTests
     public async Task Get_Unauthorized_WithoutToken()
     {
         using HttpClient client = _factory.CreateAnonymousClient();
-        HttpResponseMessage response = await client.GetAsync("/api/v1/stats");
+        HttpResponseMessage response = await client.GetAsync("/api/v1.0/GameResults");
         Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+    }
+
+    [TestMethod]
+    public async Task ClearResults_ReturnsOk_AndDeletesAll()
+    {
+        _factory.GameResultRepositoryMock
+            .Setup(r => r.DeleteAllAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(10);
+
+        HttpResponseMessage response = await _client.DeleteAsync("api/v1.0/GameResults");
+
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        _factory.GameResultRepositoryMock.Verify(r => r.DeleteAllAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 }

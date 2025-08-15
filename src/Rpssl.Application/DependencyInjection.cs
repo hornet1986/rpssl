@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Rpssl.Application.Abstractions;
 using Rpssl.Application.Behaviors;
 using Rpssl.Application.Cqrs;
-using Rpssl.Application.Services;
+using Rpssl.Application.Games;
 
 namespace Rpssl.Application;
 

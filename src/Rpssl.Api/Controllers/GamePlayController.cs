@@ -1,10 +1,11 @@
+using System.ComponentModel.DataAnnotations;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rpssl.Api.Extensions;
 using Rpssl.Application.Abstractions;
-using Rpssl.Application.Stats;
-using Rpssl.Application.Stats.Queries;
+using Rpssl.Application.GameResults;
+using Rpssl.Application.Games;
 using Rpssl.SharedKernel;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -14,19 +15,25 @@ namespace Rpssl.Api.Controllers;
 [ApiVersion(1)]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Authorize]
-public class StatsController(ISender mediator) : ControllerBase
+public class GamePlayController(ISender mediator) : ControllerBase
 {
-    [HttpGet]
-    [SwaggerOperation(Description = "Retrieves overall game statistics including total games played, win/loss counts, and other relevant metrics.")]
+    public sealed class PlayRequest
+    {
+        [Required]
+        public int? PlayerChoiceId { get; init; }
+    }
+
+    [HttpPost]
+    [SwaggerOperation(Description = "Plays a round of Rock-Paper-Scissors-Spock-Lizard. The player submits their choice, and the server responds with the result of the game.")]
     [Produces(System.Net.Mime.MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(StatsDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GameResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Get(CancellationToken ct)
+    public async Task<IActionResult> Play([FromBody] PlayRequest request, CancellationToken ct)
     {
-        Result<StatsDto> result = await mediator.Send(new GetStatsQuery(), ct);
+        Result<GameResultDto> result = await mediator.Send(new PlayGameCommand(request.PlayerChoiceId!.Value), ct);
         return result.ToActionResult();
     }
 }

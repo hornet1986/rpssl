@@ -37,4 +37,21 @@ internal sealed class EfGameResultRepository(RpsslDbContext db) : IGameResultRep
             .Select(g => new { g.Key, Count = g.Count() })
             .ToDictionaryAsync(x => x.Key, x => x.Count, ct);
     }
+
+    public Task<int> DeleteAllAsync(CancellationToken ct = default)
+    {
+    return DeleteAllInternalAsync(ct);
+    }
+
+    private async Task<int> DeleteAllInternalAsync(CancellationToken ct)
+    {
+        List<GameResult> all = await db.GameResults.ToListAsync(ct);
+        if (all.Count == 0)
+        {
+            return 0;
+        }
+        db.GameResults.RemoveRange(all);
+        await db.SaveChangesAsync(ct);
+        return all.Count;
+    }
 }

@@ -69,7 +69,7 @@ public sealed class GameIntegrationTests
             .Returns(Task.CompletedTask);
 
         // Act
-        HttpResponseMessage response = await _client.PostAsJsonAsync("/api/v1/game/play", new { playerChoiceId = 1 });
+        HttpResponseMessage response = await _client.PostAsJsonAsync("api/v1.0/GamePlay", new { playerChoiceId = 1 });
 
         // Assert
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
