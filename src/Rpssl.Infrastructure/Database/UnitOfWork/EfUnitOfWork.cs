@@ -4,7 +4,7 @@ using Rpssl.SharedKernel;
 
 namespace Rpssl.Infrastructure.Database.UnitOfWork;
 
-public class EfUnitOfWork(RpsslDbContext dbContext, IDomainEventsDispatcher domainEventsDispatcher) : IUnitOfWork
+internal sealed class EfUnitOfWork(RpsslDbContext dbContext, IDomainEventsDispatcher domainEventsDispatcher) : IUnitOfWork
 {
     public async Task<int> SaveChangesAsync(CancellationToken ct = default)
     {

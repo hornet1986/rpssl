@@ -4,7 +4,7 @@ using Rpssl.Domain.GameResults;
 
 namespace Rpssl.Infrastructure.GameResults;
 
-public class GameResultConfiguration : IEntityTypeConfiguration<GameResult>
+internal sealed class GameResultConfiguration : IEntityTypeConfiguration<GameResult>
 {
     public void Configure(EntityTypeBuilder<GameResult> builder)
     {

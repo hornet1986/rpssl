@@ -1,6 +1,6 @@
 namespace Rpssl.Infrastructure.Random;
 
-public sealed class RandomNumberOptions
+internal sealed class RandomNumberOptions
 {
     public const string SectionName = "RandomNumber";
 

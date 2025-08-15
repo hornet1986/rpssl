@@ -3,7 +3,7 @@ using Rpssl.Domain.Users;
 
 namespace Rpssl.Infrastructure.Database.Repositories;
 
-public class EfUserRepository(RpsslDbContext dbContext) : IUserRepository
+internal sealed class EfUserRepository(RpsslDbContext dbContext) : IUserRepository
 {
     public Task<User?> GetByUsernameAsync(string username, CancellationToken ct = default)
         => dbContext.Users.FirstOrDefaultAsync(u => u.Username == username, ct);

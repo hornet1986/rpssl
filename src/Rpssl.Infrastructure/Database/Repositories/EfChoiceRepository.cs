@@ -3,7 +3,7 @@ using Rpssl.Domain.Choices;
 
 namespace Rpssl.Infrastructure.Database.Repositories;
 
-public class EfChoiceRepository(RpsslDbContext dbContext) : IChoiceRepository
+internal sealed class EfChoiceRepository(RpsslDbContext dbContext) : IChoiceRepository
 {
     public async Task<IReadOnlyList<Choice>> GetAllAsync(CancellationToken ct = default)
         => await dbContext.Choices

@@ -4,7 +4,7 @@ using Rpssl.Domain.Choices;
 
 namespace Rpssl.Infrastructure.Choices;
 
-public class ChoiceConfiguration : IEntityTypeConfiguration<Choice>
+internal sealed class ChoiceConfiguration : IEntityTypeConfiguration<Choice>
 {
     public void Configure(EntityTypeBuilder<Choice> builder)
     {
