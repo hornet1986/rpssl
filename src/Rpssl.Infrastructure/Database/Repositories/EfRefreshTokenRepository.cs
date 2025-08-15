@@ -3,7 +3,7 @@ using Rpssl.Domain.RefreshTokens;
 
 namespace Rpssl.Infrastructure.Database.Repositories;
 
-public class EfRefreshTokenRepository(RpsslDbContext db) : IRefreshTokenRepository
+internal sealed class EfRefreshTokenRepository(RpsslDbContext db) : IRefreshTokenRepository
 {
     public Task<RefreshToken?> GetByIdAsync(Guid id, CancellationToken ct = default)
         => db.RefreshTokens.FirstOrDefaultAsync(t => t.Id == id, ct);

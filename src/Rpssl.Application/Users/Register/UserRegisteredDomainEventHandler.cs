@@ -3,7 +3,7 @@ using Rpssl.SharedKernel;
 
 namespace Rpssl.Application.Users.Register;
 
-internal sealed class GameReusltCreatedDomainEventHandler : IDomainEventHandler<UserRegisteredDomainEvent>
+internal sealed class UserRegisteredDomainEventHandler : IDomainEventHandler<UserRegisteredDomainEvent>
 {
     public Task Handle(UserRegisteredDomainEvent domainEvent, CancellationToken cancellationToken)
     {

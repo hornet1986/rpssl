@@ -3,4 +3,4 @@ using Rpssl.SharedKernel;
 
 namespace Rpssl.Application.Choices.Queries;
 
-public record GetChoicesQuery() : IRequest<Result<IReadOnlyList<ChoiceDto>>>;
+public sealed record GetChoicesQuery() : IRequest<Result<IReadOnlyList<ChoiceDto>>>;

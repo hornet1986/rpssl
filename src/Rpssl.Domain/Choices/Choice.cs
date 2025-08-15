@@ -5,7 +5,7 @@ public class Choice
     public int Id { get; private set; }
     public string Name { get; private set; } = null!;
 
-    private Choice() { } // EF
+    private Choice() { }
     public Choice(int id, string name)
     {
         Id = id;

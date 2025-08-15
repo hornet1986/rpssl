@@ -4,7 +4,7 @@ using Rpssl.Domain.GameResults;
 
 namespace Rpssl.Infrastructure.Database.Repositories;
 
-public class EfGameResultRepository(RpsslDbContext db) : IGameResultRepository
+internal sealed class EfGameResultRepository(RpsslDbContext db) : IGameResultRepository
 {
     public async Task AddAsync(GameResult result, CancellationToken ct = default)
     {

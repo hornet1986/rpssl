@@ -1,6 +1,6 @@
 namespace Rpssl.Infrastructure.Authentication;
 
-public sealed class JwtOptions
+internal sealed class JwtOptions
 {
     public const string SectionName = "Jwt";
     public string Issuer { get; set; } = string.Empty;

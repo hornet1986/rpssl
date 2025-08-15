@@ -12,7 +12,6 @@ namespace Rpssl.Infrastructure.Random;
 internal sealed class RandomNumberService(HttpClient httpClient, IOptions<RandomNumberOptions> options, ILogger<RandomNumberService> logger) : IRandomNumberService
 {
     private readonly RandomNumberOptions _options = options.Value;
-    private readonly ILogger<RandomNumberService> _logger = logger;
 
     public async Task<Result<int>> GetRandomOneToFiveAsync(CancellationToken cancellationToken)
     {
@@ -32,13 +31,13 @@ internal sealed class RandomNumberService(HttpClient httpClient, IOptions<Random
                     {
                         // Gracefully handle network/transient exceptions on each retry without flooding the console with stack traces
                         string reason = outcome.Exception.Message;
-                        _logger.LogInformation(
+                        logger.LogInformation(
                             "Random number API attempt {Attempt}/{MaxAttempts} failed: {Reason}. Retrying in {Delay}.",
                             attempt, _options.MaxAttempts, reason, delay);
                     }
                     else
                     {
-                        _logger.LogWarning(
+                        logger.LogWarning(
                             "Random number API returned out-of-range value {Value} on attempt {Attempt}/{MaxAttempts}. Retrying in {Delay}.",
                             outcome.Result, attempt, _options.MaxAttempts, delay);
                     }
@@ -65,7 +64,7 @@ internal sealed class RandomNumberService(HttpClient httpClient, IOptions<Random
                 return Result.Success(value);
             }
 
-            _logger.LogError(
+            logger.LogError(
                 "Random number API did not return a value within [1,5] after {MaxAttempts} attempts. Last value: {Value}. Uri: {Uri}",
                 _options.MaxAttempts, value, BuildUri());
             return Result.Failure<int>(Error.Failure(
@@ -75,7 +74,7 @@ internal sealed class RandomNumberService(HttpClient httpClient, IOptions<Random
         }
         catch (HttpRequestException ex)
         {
-            _logger.LogError(ex,
+            logger.LogError(ex,
                 "Network failure contacting random number API after {MaxAttempts} attempts. Uri: {Uri}",
                 _options.MaxAttempts, BuildUri());
             return Result.Failure<int>(Error.Problem(
@@ -84,7 +83,7 @@ internal sealed class RandomNumberService(HttpClient httpClient, IOptions<Random
         }
         catch (TaskCanceledException ex)
         {
-            _logger.LogError(ex,
+            logger.LogError(ex,
                 "Random number API request timed out or was canceled after {MaxAttempts} attempts. Uri: {Uri}",
                 _options.MaxAttempts, BuildUri());
             return Result.Failure<int>(Error.Problem(
@@ -93,7 +92,7 @@ internal sealed class RandomNumberService(HttpClient httpClient, IOptions<Random
         }
         catch (JsonException ex)
         {
-            _logger.LogError(ex,
+            logger.LogError(ex,
                 "Random number API returned malformed JSON after {MaxAttempts} attempts. Uri: {Uri}",
                 _options.MaxAttempts, BuildUri());
             return Result.Failure<int>(Error.Problem(
@@ -102,7 +101,7 @@ internal sealed class RandomNumberService(HttpClient httpClient, IOptions<Random
         }
         catch (FormatException ex)
         {
-            _logger.LogError(ex,
+            logger.LogError(ex,
                 "Random number API returned unexpected payload after {MaxAttempts} attempts. Uri: {Uri}",
                 _options.MaxAttempts, BuildUri());
             return Result.Failure<int>(Error.Problem(

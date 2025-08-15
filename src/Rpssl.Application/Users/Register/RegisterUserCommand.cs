@@ -1,5 +1,4 @@
 ﻿using Rpssl.Application.Abstractions;
-using Rpssl.Application.Token;
 using Rpssl.SharedKernel;
 
 namespace Rpssl.Application.Users.Register;

@@ -20,6 +20,7 @@ using Rpssl.Infrastructure.Database.UnitOfWork;
 using Rpssl.Infrastructure.DomainEvents;
 using Rpssl.Infrastructure.Random;
 using Rpssl.Infrastructure.Time;
+using Rpssl.SharedKernel;
 
 namespace Rpssl.Infrastructure;
 
@@ -103,6 +104,7 @@ public static class DependencyInjection
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<IJwtTokenService, JwtTokenService>();
+        services.AddSingleton<IJwtOptionsAccessor, JwtOptionsAccessor>();
 
         JwtOptions jwt = new();
         configuration.GetSection(JwtOptions.SectionName).Bind(jwt);

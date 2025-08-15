@@ -1,5 +1,4 @@
 using Rpssl.Application.Abstractions;
-using Rpssl.Application.Token;
 using Rpssl.Domain.RefreshTokens;
 using Rpssl.Domain.UnitOfWork;
 using Rpssl.Domain.Users;
@@ -12,6 +11,7 @@ internal sealed class RegisterUserCommandHandler(
     IRefreshTokenRepository refreshTokens,
     IPasswordHasher hasher,
     IJwtTokenService jwt,
+    IJwtOptionsAccessor jwtOptions,
     IDateTimeProvider dateTime,
     IUnitOfWork uow) : IRequestHandler<RegisterUserCommand, Result<UserDto>>
 {
@@ -36,10 +36,10 @@ internal sealed class RegisterUserCommandHandler(
         string rawRefresh = jwt.GenerateRefreshTokenRaw();
         string refreshHash = jwt.HashRefreshToken(rawRefresh);
         DateTimeOffset now = dateTime.UtcNow;
-        DateTimeOffset refreshExpires = now.AddDays(14); // TODO: inject from options for consistency
+        DateTimeOffset refreshExpires = now.AddDays(jwtOptions.RefreshTokenDays);
         RefreshToken rt = new(user.Id, refreshHash, sessionId, now, refreshExpires);
         await refreshTokens.AddAsync(rt, cancellationToken);
-        
+
         await uow.SaveChangesAsync(cancellationToken);
 
         UserDto dto = new(accessToken, accessExpires, rawRefresh, refreshExpires, sessionId, user.Username);

@@ -1,4 +1,4 @@
-namespace Rpssl.Application.Abstractions;
+namespace Rpssl.SharedKernel;
 
 public interface IDateTimeProvider
 {
