@@ -1,5 +1,6 @@
 using Moq;
 using Rpssl.Application.Abstractions;
+using Rpssl.Application.GameResults;
 using Rpssl.Application.Games;
 using Rpssl.Domain.Choices;
 using Rpssl.Domain.GameOutcome;
@@ -7,7 +8,7 @@ using Rpssl.Domain.GameResults;
 using Rpssl.Domain.UnitOfWork;
 using Rpssl.SharedKernel;
 
-namespace Rpssl.Application.Tests.Features.Game;
+namespace Rpssl.Application.Tests.Game;
 
 [TestClass]
 public class PlayGameCommandHandlerTests

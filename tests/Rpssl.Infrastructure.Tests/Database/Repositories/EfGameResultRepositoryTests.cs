@@ -108,4 +108,20 @@ public class EfGameResultRepositoryTests
         Assert.AreEqual(1, dict[GameOutcome.Draw]);
         Assert.AreEqual(2, dict[GameOutcome.PlayerWin]);
     }
+
+    [TestMethod]
+    public async Task DeleteAllAsync_RemovesAllRows()
+    {
+        await using var context = new RpsslDbContext(_dbContextOptions);
+        context.GameResults.AddRange(
+            new GameResult(1, 2, GameOutcome.Draw),
+            new GameResult(1, 2, GameOutcome.PlayerWin)
+        );
+        await context.SaveChangesAsync();
+        var repository = new EfGameResultRepository(context);
+
+        int deleted = await repository.DeleteAllAsync();
+
+        Assert.AreEqual(2, deleted);
+    }
 }

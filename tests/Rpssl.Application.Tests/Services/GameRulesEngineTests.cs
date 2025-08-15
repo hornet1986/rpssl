@@ -1,4 +1,4 @@
-using Rpssl.Application.Services;
+using Rpssl.Application.Games;
 using Rpssl.Domain.GameOutcome;
 
 namespace Rpssl.Application.Tests.Services;

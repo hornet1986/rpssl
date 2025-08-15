@@ -1,4 +1,5 @@
 using Rpssl.Application.Abstractions;
+using Rpssl.Application.GameResults;
 using Rpssl.Application.Games.Mappings;
 using Rpssl.Domain.Choices;
 using Rpssl.Domain.GameOutcome;

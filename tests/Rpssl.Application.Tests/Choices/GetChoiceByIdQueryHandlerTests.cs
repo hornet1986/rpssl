@@ -4,7 +4,7 @@ using Rpssl.Application.Choices.Queries;
 using Rpssl.Domain.Choices;
 using Rpssl.SharedKernel;
 
-namespace Rpssl.Application.Tests.Features.Choices;
+namespace Rpssl.Application.Tests.Choices;
 
 [TestClass]
 public class GetChoiceByIdQueryHandlerTests

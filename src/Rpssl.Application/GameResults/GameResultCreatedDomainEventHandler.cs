@@ -1,7 +1,7 @@
 ﻿using Rpssl.Domain.GameResults;
 using Rpssl.SharedKernel;
 
-namespace Rpssl.Application.Games;
+namespace Rpssl.Application.GameResults;
 
 internal sealed class GameResultCreatedDomainEventHandler : IDomainEventHandler<GameResultCreatedDomainEvent>
 {

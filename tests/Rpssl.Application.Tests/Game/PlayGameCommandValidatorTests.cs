@@ -1,7 +1,7 @@
 using FluentValidation.Results;
 using Rpssl.Application.Games;
 
-namespace Rpssl.Application.Tests.Features.Game;
+namespace Rpssl.Application.Tests.Game;
 
 [TestClass]
 public class PlayGameCommandValidatorTests

@@ -1,14 +1,14 @@
 using Moq;
-using Rpssl.Application.Stats;
-using Rpssl.Application.Stats.Queries;
+using Rpssl.Application.GameResults;
+using Rpssl.Application.GameResults.Queries;
 using Rpssl.Domain.GameOutcome;
 using Rpssl.Domain.GameResults;
 using Rpssl.SharedKernel;
 
-namespace Rpssl.Application.Tests.Features.Stats;
+namespace Rpssl.Application.Tests.Stats;
 
 [TestClass]
-public class GetStatsQueryTests
+public class GetGameResultsQueryHandlerTests
 {
     [TestMethod]
     public async Task Handle_ReturnsComputedDto()
@@ -24,10 +24,10 @@ public class GetStatsQueryTests
                 [GameOutcome.Draw] = 3
             });
 
-        var handler = new GetStatsQueryHandler(repo.Object);
+        var handler = new GetGameResultsQueryHandler(repo.Object);
 
         // Act
-        Result<StatsDto> result = await handler.Handle(new GetStatsQuery(), CancellationToken.None);
+        Result<GameResultsDto> result = await handler.Handle(new GetGameResultsQuery(), CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.IsSuccess);
@@ -46,10 +46,10 @@ public class GetStatsQueryTests
         repo.Setup(r => r.CountByOutcomeAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(new Dictionary<GameOutcome, int>());
 
-        var handler = new GetStatsQueryHandler(repo.Object);
+        var handler = new GetGameResultsQueryHandler(repo.Object);
 
         // Act
-        Result<StatsDto> result = await handler.Handle(new GetStatsQuery(), CancellationToken.None);
+        Result<GameResultsDto> result = await handler.Handle(new GetGameResultsQuery(), CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.IsSuccess);

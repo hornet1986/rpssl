@@ -1,6 +1,6 @@
-namespace Rpssl.Application.Stats;
+namespace Rpssl.Application.GameResults;
 
-public sealed record StatsDto(
+public sealed record GameResultsDto(
     int TotalGames,
     int PlayerWins,
     int ComputerWins,
